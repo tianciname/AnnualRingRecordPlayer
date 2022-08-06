@@ -1,13 +1,21 @@
 package com.wuguozhang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.wuguozhang.dao.AnnualRingImpl;
+import com.wuguozhang.auunalringutils.AnnualRingUtils;
+import com.wuguozhang.dao.AnnualRingInter;
 import com.wuguozhang.domain.AnnualRing;
+import com.wuguozhang.entites.AnnualRingEntity;
 import com.wuguozhang.service.AnnualRingService;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,100 +29,89 @@ import java.util.List;
  *
  */
 @Data
+@NoArgsConstructor
 @Service
 public class AnnualRingServiceImpl implements AnnualRingService {
 
     @Autowired
-    private AnnualRingImpl annualRing;
+    private AnnualRingInter annualRing;
 
     @Override
-    public List<AnnualRing> getAllAnnualRingImages() {
+    public ResponseEntity<List<Long>> getAllAnnualRingIdList() {
+
         LambdaQueryWrapper<AnnualRing> annualRingLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        annualRingLambdaQueryWrapper.select(AnnualRing::getId, AnnualRing::getAnnualRingImage);
-        return annualRing.selectList(annualRingLambdaQueryWrapper);
-    }
+        annualRingLambdaQueryWrapper.select(AnnualRing::getId);
 
-    @Override
-    public List<AnnualRing> getAllAnnualRing() {
+        List<Long> idList = new ArrayList<>();
 
-        return annualRing.selectList(null);
-    }
+        for (AnnualRing annualRing : annualRing.selectList(annualRingLambdaQueryWrapper)) {
 
-    @Override
-    public AnnualRing getAnnualRingById(Integer id) {
-
-        return annualRing.selectById(id);
-    }
-
-    @Override
-    public boolean addAnnualRing(List<AnnualRing> annualRingList) {
-        try {
-            for (AnnualRing AnnualRingData:annualRingList) {
-                annualRing.insert(AnnualRingData);
-            }
-            return true;
-        }catch (Exception exception){
-            System.out.println(exception.toString());
+            idList.add(annualRing.getId());
         }
-        return false;
+        return ResponseEntity.status(HttpStatus.OK)
+                             .contentType(MediaType.APPLICATION_JSON)
+                             .body(idList);
     }
 
     @Override
-    public boolean updateAnnualRingImageById(AnnualRing annualR) {
+    public ResponseEntity<AnnualRingEntity> getAnnualRingImage(Integer id) throws IOException {
 
-        try {
+        LambdaQueryWrapper<AnnualRing> annualRingLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        annualRingLambdaQueryWrapper.select(AnnualRing::getAnnualRingImage);
+        AnnualRing annualR = annualRing.selectById(id);
 
-            annualRing.updateById(annualR);
+        String imagePath = annualR.getAnnualRingImage();
 
-            return true;
-        }catch (Exception exception){
-            System.out.println(exception.toString());
-        }
+        AnnualRingEntity annualRingEntity = new AnnualRingEntity();
+        annualRingEntity.setAnnualRingImage(imagePath);
 
-        return false;
+        return ResponseEntity.status(HttpStatus.OK)
+                             .contentType(MediaType.IMAGE_JPEG)
+                             .body(annualRingEntity);
     }
 
     @Override
-    public boolean updateAnnualRingEnvironmentalById(AnnualRing annualR) {
+    public ResponseEntity<AnnualRingEntity> getAnnualRing(Integer id) throws IOException {
 
-        try {
+        AnnualRing annualR = annualRing.selectById(id);
 
-            annualRing.updateById(annualR);
+        AnnualRingEntity annualRingEntity = new AnnualRingEntity();
+        annualRingEntity.setAnnualRingImage(annualR.getAnnualRingImage());
+        annualRingEntity.setAnnualRingEnvironmental(annualR.getAnnualRingEnvironmental());
+        annualRingEntity.setMusic(annualR.getMusic());
 
-            return true;
-        }catch (Exception exception){
-            System.out.println(exception.toString());
-        }
 
-        return false;
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(annualRingEntity);
+
     }
 
     @Override
-    public boolean updateAnnualRingMusicById(AnnualRing annualR) {
+    public ResponseEntity<AnnualRingEntity> addAnnualRing(AnnualRing annualR) {
 
-        try {
+         annualRing.insert(annualR);
 
-            annualRing.updateById(annualR);
-
-            return true;
-        }catch (Exception exception){
-            System.out.println(exception.toString());
-        }
-
-        return false;
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(null);
     }
 
     @Override
-    public boolean deleteAnnualRingById(Integer id) {
+    public ResponseEntity<AnnualRingEntity> deleteAnnualRingById(Integer id) throws IOException {
 
-        try {
+        annualRing.deleteById(id);
+        annualRing.selectById(id);
 
-            annualRing.deleteById(id);
-            return  true;
-        }catch (Exception exception){
-            System.out.println(exception.toString());
-        }
+        AnnualRing annualR = annualRing.selectById(id);
 
-        return false;
+        AnnualRingUtils.deleteData(annualR.getAnnualRingImage());
+        AnnualRingUtils.deleteData(annualR.getAnnualRingEnvironmental());
+        AnnualRingUtils.deleteData(annualR.getMusic());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(null);
+
     }
 }

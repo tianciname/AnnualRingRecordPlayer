@@ -6,6 +6,7 @@ import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -21,7 +22,8 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-@Table(name = "data_annualRing")
+@NoArgsConstructor
+@Table
 @TableCharset(MySqlCharsetConstant.UTF8)
 public class AnnualRing {
 
@@ -31,18 +33,18 @@ public class AnnualRing {
     @IsKey
     @IsAutoIncrement
     @ColumnType(MySqlTypeConstant.INT)
-    public Integer id;
+    public long id;
 
     @Column
-    @ColumnType(MySqlTypeConstant.BINARY)
-    public byte[] annualRingImage;
+    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 100)
+    public String annualRingImage;
 
     @Column
-    @ColumnType(MySqlTypeConstant.VARCHAR)
+    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 100)
     public String annualRingEnvironmental;
 
     @Column
-    @ColumnType(MySqlTypeConstant.BINARY)
-    public byte[] Music;
+    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 100)
+    public String music;
 
 }

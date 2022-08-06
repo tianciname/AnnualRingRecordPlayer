@@ -2,8 +2,10 @@ package com.wuguozhang.service;
 
 
 import com.wuguozhang.domain.AnnualRing;
-import org.springframework.stereotype.Service;
+import com.wuguozhang.entites.AnnualRingEntity;
+import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -20,21 +22,21 @@ public interface AnnualRingService {
 
 
     /**
+     * 功能：获取所有年轮数据的id
+     *
+     * @return ResponseEntity<List<Long>>  年轮信息id的列表
+     */
+    public ResponseEntity<List<Long>> getAllAnnualRingIdList();
+
+
+    /**
      * 功能: 返回所有年轮图片
      *
      * @return 年轮图片的列表
      *
      */
-    public List<AnnualRing> getAllAnnualRingImages();
+    public ResponseEntity<AnnualRingEntity> getAnnualRingImage(Integer id) throws IOException;
 
-
-    /**
-     * 功能: 返回所有年轮图片+环保知识+音乐
-     *
-     * @return 年轮图片+环保知识+音乐的列表
-     *
-     */
-    public List<AnnualRing> getAllAnnualRing();
 
 
     /**
@@ -44,40 +46,17 @@ public interface AnnualRingService {
      * @return 年轮图片+环保知识+音乐的json对象
      *
      */
-    public AnnualRing getAnnualRingById(Integer id);
+    public ResponseEntity<AnnualRingEntity>  getAnnualRing(Integer id) throws IOException;
 
 
     /**
-     * 功能 批量添加年轮图片+环保知识+音乐
+     * 功能 添加一组年轮图片+环保知识+音乐
      *
      * @return 返回一个布尔值判断是否添加成功
      *
      */
-    public boolean addAnnualRing(List<AnnualRing> annualRingList);
+    public ResponseEntity<AnnualRingEntity> addAnnualRing(AnnualRing annualRing);
 
-
-    /**
-     * 功能: 更新一组年轮数据的年路图片
-     *
-     * @param annualR 一组年轮数据
-     */
-    public boolean updateAnnualRingImageById(AnnualRing annualR);
-
-
-    /**
-     * 功能: 添加一组年轮数据的环保知识
-     *
-     * @param annualR 一组年轮数据
-     */
-    public boolean updateAnnualRingEnvironmentalById(AnnualRing annualR);
-
-
-    /**
-     * 功能: 更新一组年轮数据的音乐
-     *
-     * @param annualR 一组年轮数据
-     */
-    public boolean updateAnnualRingMusicById(AnnualRing annualR);
 
 
     /**
@@ -85,7 +64,8 @@ public interface AnnualRingService {
      *
      * @param id 一组年轮数据的id
      */
-    public boolean deleteAnnualRingById(Integer id);
+    public ResponseEntity<AnnualRingEntity> deleteAnnualRingById(Integer id) throws IOException;
+
 
 
 }

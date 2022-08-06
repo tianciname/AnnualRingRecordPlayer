@@ -6,14 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-
-//actable配置
-@MapperScan({"com.gitee.sunchenbin.mybatis.actable.dao.*"} )
-@ComponentScan("com.gitee.sunchenbin.mybatis.actable.manager.*")
+@MapperScan({"com.gitee.sunchenbin.mybatis.actable.dao.*","com.wuguozhang.dao"} )
+@ComponentScan({"com.gitee.sunchenbin.mybatis.actable.manager.*","com.wuguozhang.*"})
 public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
+
 
 }
