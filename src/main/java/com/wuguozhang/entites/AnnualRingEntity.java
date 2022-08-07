@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 /**
- * 功能: 库模块返回实体类
+ * 功能: 库模块实体类
+ *
  * @author wuguozhang
  * @version 1.0 2022.8
  */
@@ -16,11 +19,17 @@ import lombok.NoArgsConstructor;
 public class AnnualRingEntity {
 
 
-    public long id;
+    private long id;
 
-    public String annualRingImage;
+    private List<String> idList;
 
-    public String annualRingEnvironmental;
+    private String annualRingImage;
 
-    public String music;
+    private String annualRingEnvironmental;
+
+    private String music;
+    
+    public String musicName;
+
+
 }

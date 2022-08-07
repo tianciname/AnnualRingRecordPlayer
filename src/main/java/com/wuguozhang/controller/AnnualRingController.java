@@ -3,6 +3,7 @@ package com.wuguozhang.controller;
 import com.wuguozhang.auunalringutils.AnnualRingUtils;
 import com.wuguozhang.auunalringutils.DataType;
 import com.wuguozhang.domain.AnnualRing;
+import com.wuguozhang.entites.ARResponseEntity;
 import com.wuguozhang.entites.AnnualRingEntity;
 import com.wuguozhang.service.AnnualRingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 所属功能模块: 建库模块
- *
- * 功能: 前端和后台操作年轮图片和环保知识
+ * 功能: 表现层实现类
  *
  * @author wuguozhang
  * @version 1.0 2022.8
@@ -33,10 +34,10 @@ public class AnnualRingController {
     /**
      * 功能：获取所有年轮数据的id
      *
-     * @return ResponseEntity<List<Long>>  年轮信息id的列表
+     * @return ARResponseEntity  年轮信息id的列表
      */
     @GetMapping("/allid")
-    public ResponseEntity<List<Long>> getAllAnnualRingIdList(){
+    public ARResponseEntity getAllAnnualRingIdList(){
 
         return annualRingService.getAllAnnualRingIdList();
     }
@@ -47,10 +48,10 @@ public class AnnualRingController {
      *
      * @param id 一组年轮信息的id
      *
-     * @return ResponseEntity<AnnualRingEntity> 年轮图片地址的实体类
+     * @return ARResponseEntity 年轮图片地址的实体类
      */
     @GetMapping("/img/{id}")
-    public ResponseEntity<AnnualRingEntity> getAnnualRingImage(@PathVariable Integer id) throws IOException {
+    public ARResponseEntity getAnnualRingImage(@PathVariable String id) {
 
         return annualRingService.getAnnualRingImage(id);
 
@@ -62,11 +63,10 @@ public class AnnualRingController {
      *
      * @param id 年轮图片id
      *
-     * @return ResponseEntity<AnnualRingEntity> 年轮信息实体类对应的文件地址
-     *
+     * @return ARResponseEntity 年轮信息实体类对应的文件地址
      */
     @GetMapping("/{id}")
-    public ResponseEntity<AnnualRingEntity>  getAnnualRing(@PathVariable Integer id) throws IOException {
+    public ARResponseEntity  getAnnualRing(@PathVariable String id){
 
         return annualRingService.getAnnualRing(id);
     }
@@ -75,19 +75,18 @@ public class AnnualRingController {
     /**
      * 功能: 添加一组年轮图片 + 环保知识 + 音乐
      *
-     * @param   id  年轮信息id
      * @param   annualRingImage 年轮图片
      * @param   annualRingEnvironmental 环保知识
      * @param   music 音乐
      *
-     * @return ResponseEntity<AnnualRingEntity> 空实体类
+     * @return ARResponseEntity 空实体类
      */
     @PostMapping
-    public ResponseEntity<AnnualRingEntity> addAnnualRing(@RequestParam Integer id,
-                                                          @RequestParam MultipartFile annualRingImage,
+    public ARResponseEntity addAnnualRing(@RequestParam MultipartFile annualRingImage,
                                                           @RequestParam String annualRingEnvironmental,
                                                           @RequestParam MultipartFile music) throws IOException {
 
+        String id = UUID.randomUUID().toString();
         AnnualRingUtils.saveData(DataType.IMAGE,
                 annualRingImage,
                 "/" + id);
@@ -101,9 +100,11 @@ public class AnnualRingController {
                 "/" + id);
 
         AnnualRing annualRing = new AnnualRing();
+        annualRing.setId(id);
         annualRing.setAnnualRingImage(AnnualRingUtils.getImagePath());
         annualRing.setAnnualRingEnvironmental(AnnualRingUtils.getEnvironmentalPath());
         annualRing.setMusic(AnnualRingUtils.getMusicPath());
+
         return  annualRingService.addAnnualRing(annualRing);
 
     }
@@ -114,12 +115,21 @@ public class AnnualRingController {
      * ‘功能: 按照id删除一组年轮数据
      *
      * @param id 一组年轮数据的id
-     *
+     * @return ARResponseEntity 空实体类
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<AnnualRingEntity> deleteAnnualRingById(@PathVariable Integer id) throws IOException {
+    public ARResponseEntity deleteAnnualRingById(@PathVariable String id){
 
         return  annualRingService.deleteAnnualRingById(id);
+
+    }
+
+    @PostMapping("/name/{musicName}")
+    public ARResponseEntity addMusicName(@RequestBody AnnualRing annualRing){
+
+
+        return annualRingService.addMusicName(annualRing);
+
     }
 
 }

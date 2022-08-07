@@ -2,16 +2,18 @@ package com.wuguozhang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wuguozhang.auunalringutils.AnnualRingUtils;
+import com.wuguozhang.controller.exception.Code;
+import com.wuguozhang.controller.exception.superexception.extendbussinessexception.DeleteException;
+import com.wuguozhang.controller.exception.superexception.extendbussinessexception.GetException;
+import com.wuguozhang.controller.exception.superexception.extendbussinessexception.SaveException;
 import com.wuguozhang.dao.AnnualRingInter;
 import com.wuguozhang.domain.AnnualRing;
+import com.wuguozhang.entites.ARResponseEntity;
 import com.wuguozhang.entites.AnnualRingEntity;
 import com.wuguozhang.service.AnnualRingService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,7 +23,6 @@ import java.util.List;
 
 /**
  * 所属功能模块: 建库模块
- *
  * 功能: service层接口实现类
  *
  * @author wuguozhang
@@ -37,81 +38,134 @@ public class AnnualRingServiceImpl implements AnnualRingService {
     private AnnualRingInter annualRing;
 
     @Override
-    public ResponseEntity<List<Long>> getAllAnnualRingIdList() {
+    public ARResponseEntity getAllAnnualRingIdList() {
 
         LambdaQueryWrapper<AnnualRing> annualRingLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        annualRingLambdaQueryWrapper.select(AnnualRing::getId);
+        AnnualRingEntity annualRingEntity = new AnnualRingEntity();
+        List<String> idList = new ArrayList<>();
 
-        List<Long> idList = new ArrayList<>();
+        try {
+            annualRingLambdaQueryWrapper.select(AnnualRing::getId);
 
-        for (AnnualRing annualRing : annualRing.selectList(annualRingLambdaQueryWrapper)) {
+            for (AnnualRing annualRing : annualRing.selectList(annualRingLambdaQueryWrapper)) {
 
-            idList.add(annualRing.getId());
+                idList.add(annualRing.getId());
+            }
+            annualRingEntity.setIdList(idList);
+        }catch (Exception e){
+            throw new GetException();
         }
-        return ResponseEntity.status(HttpStatus.OK)
-                             .contentType(MediaType.APPLICATION_JSON)
-                             .body(idList);
+
+        return new ARResponseEntity(
+                annualRingEntity,
+                Code.GET_OK,
+                "获取成功"
+        );
     }
 
     @Override
-    public ResponseEntity<AnnualRingEntity> getAnnualRingImage(Integer id) throws IOException {
-
-        LambdaQueryWrapper<AnnualRing> annualRingLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        annualRingLambdaQueryWrapper.select(AnnualRing::getAnnualRingImage);
-        AnnualRing annualR = annualRing.selectById(id);
-
-        String imagePath = annualR.getAnnualRingImage();
+    public ARResponseEntity getAnnualRingImage(String id)  {
 
         AnnualRingEntity annualRingEntity = new AnnualRingEntity();
-        annualRingEntity.setAnnualRingImage(imagePath);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                             .contentType(MediaType.IMAGE_JPEG)
-                             .body(annualRingEntity);
+        try {
+            AnnualRing annualR = annualRing.selectById(id);
+            annualRingEntity.setAnnualRingImage(annualR.getAnnualRingImage());
+
+        }catch (Exception e){
+            throw new GetException();
+
+        }
+
+
+        return new ARResponseEntity(
+                annualRingEntity,
+                Code.GET_OK,
+                "获取成功"
+        );
     }
 
     @Override
-    public ResponseEntity<AnnualRingEntity> getAnnualRing(Integer id) throws IOException {
-
-        AnnualRing annualR = annualRing.selectById(id);
+    public ARResponseEntity getAnnualRing(String id) {
 
         AnnualRingEntity annualRingEntity = new AnnualRingEntity();
-        annualRingEntity.setAnnualRingImage(annualR.getAnnualRingImage());
-        annualRingEntity.setAnnualRingEnvironmental(annualR.getAnnualRingEnvironmental());
-        annualRingEntity.setMusic(annualR.getMusic());
 
+        try{
+            AnnualRing annualR = annualRing.selectById(id);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(annualRingEntity);
+            annualRingEntity.setAnnualRingImage(annualR.getAnnualRingImage());
+            annualRingEntity.setAnnualRingEnvironmental(annualR.getAnnualRingEnvironmental());
+            annualRingEntity.setMusic(annualR.getMusic());
+
+        }catch (Exception e){
+            throw new GetException();
+        }
+
+        return new ARResponseEntity(
+                annualRingEntity,
+                Code.GET_OK,
+                "获取成功"
+        );
 
     }
 
     @Override
-    public ResponseEntity<AnnualRingEntity> addAnnualRing(AnnualRing annualR) {
+    public ARResponseEntity addAnnualRing(AnnualRing annualR) {
 
-         annualRing.insert(annualR);
+        try{
+            annualRing.insert(annualR);
+        }catch (Exception e){
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(null);
+            throw new SaveException();
+        }
+
+
+        return new ARResponseEntity(
+                null,
+                Code.SAVE_OK,
+                "添加成功"
+        );
     }
 
     @Override
-    public ResponseEntity<AnnualRingEntity> deleteAnnualRingById(Integer id) throws IOException {
+    public ARResponseEntity deleteAnnualRingById(String id)  {
 
-        annualRing.deleteById(id);
         annualRing.selectById(id);
 
         AnnualRing annualR = annualRing.selectById(id);
 
-        AnnualRingUtils.deleteData(annualR.getAnnualRingImage());
-        AnnualRingUtils.deleteData(annualR.getAnnualRingEnvironmental());
-        AnnualRingUtils.deleteData(annualR.getMusic());
+        try {
+            AnnualRingUtils.deleteData(annualR.getAnnualRingImage());
+            AnnualRingUtils.deleteData(annualR.getAnnualRingEnvironmental());
+            AnnualRingUtils.deleteData(annualR.getMusic());
+        }catch (Exception e){
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(null);
+            throw new DeleteException();
+        }
 
+        annualRing.deleteById(id);
+
+        return new ARResponseEntity(
+                null,
+                Code.DELETE_OK,
+                "删除成功"
+        );
+
+    }
+
+    @Override
+    public ARResponseEntity addMusicName(AnnualRing annualR) {
+
+        try {
+            annualRing.updateById(annualR);
+        }catch (Exception e){
+            throw new SaveException();
+        }
+
+        return new ARResponseEntity(
+                null,
+                Code.SAVE_ERR,
+                "添加成功"
+        );
     }
 }

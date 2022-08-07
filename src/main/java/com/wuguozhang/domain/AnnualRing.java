@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * 年轮实体类
- *
  * 成员变量:
  *         annualRingImage             年轮图片
  *         annualRingEnvironmental     环保知识
@@ -31,20 +30,23 @@ public class AnnualRing {
     @Column
     @IsNotNull
     @IsKey
-    @IsAutoIncrement
-    @ColumnType(MySqlTypeConstant.INT)
-    public long id;
+    @ColumnType(MySqlTypeConstant.VARCHAR)
+    public String id;
 
     @Column
-    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 100)
+    @ColumnType(value = MySqlTypeConstant.VARCHAR)
     public String annualRingImage;
 
     @Column
-    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 100)
+    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 500)
     public String annualRingEnvironmental;
 
     @Column
-    @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 100)
+    @ColumnType(value = MySqlTypeConstant.VARCHAR)
     public String music;
+
+    @Column
+    @ColumnType(value = MySqlTypeConstant.VARCHAR)
+    public String musicName;
 
 }

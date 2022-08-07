@@ -42,16 +42,15 @@ public class AnnualRingUtils {
         if (dataType.equals(DataType.IMAGE)){
 
             File imageFile =
-                    new File(BASE_PATH + PathType.IMAGE_FILE+ idPath );
+                    new File(BASE_PATH + File.separator + idPath + File.separator + PathType.IMAGE_FILE );
 
             if(!imageFile.exists()){
                 imageFile.mkdirs();
             }
-            boolean mkdirs = imageFile.mkdirs();
 
-            IMAGE_PATH = imageFile.getPath();
+            IMAGE_PATH = imageFile.getCanonicalPath() + File.separator +  data.getOriginalFilename();
 
-            data.transferTo(new File(imageFile +"/" +  data.getOriginalFilename()));
+            data.transferTo(new File(IMAGE_PATH));
 
             return true;
 
@@ -61,15 +60,16 @@ public class AnnualRingUtils {
 
 
             File musicFile =
-                    new File(BASE_PATH + PathType.MUSIC_FILE + idPath);
+                    new File(BASE_PATH + File.separator +
+                            idPath + File.separator + PathType.MUSIC_FILE);
 
             if(!musicFile.exists()){
                 musicFile.mkdirs();
             }
 
-            ENVIRONMENTAL_PATH = musicFile.getPath();
+            MUSIC_PATH = musicFile.getCanonicalPath() + File.separator + data.getOriginalFilename();
 
-            data.transferTo(new File(musicFile + data.getOriginalFilename()));
+            data.transferTo(new File(MUSIC_PATH));
 
             return true;
 
@@ -84,20 +84,22 @@ public class AnnualRingUtils {
         if (dataType.equals(DataType.ENVIRONMENTAL)) {
 
             File environmentFile =
-                    new File(BASE_PATH +
-                            PathType.ENVIRONMENTAL_FILE +
-                            idPath + FilePostfix.ENVIRONMENTAL_POSTFIX);
-
+                    new File(BASE_PATH + File.separator+
+                            idPath+ File.separator +
+                            PathType.ENVIRONMENTAL_FILE);
 
             if(!environmentFile.exists()){
                  environmentFile.mkdirs();
             }
 
-            MUSIC_PATH = environmentFile.getPath();
+            ENVIRONMENTAL_PATH = environmentFile.getCanonicalPath() + File.separator+ "message.text";
 
-            FileWriter fileWriter = new FileWriter(environmentFile);
+            BufferedWriter bufferedWriter = new BufferedWriter(
+                    new FileWriter(ENVIRONMENTAL_PATH));
 
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
 
             return true;
 
