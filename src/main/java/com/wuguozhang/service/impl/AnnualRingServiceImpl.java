@@ -164,7 +164,7 @@ public class AnnualRingServiceImpl implements AnnualRingService {
 
         return new ARResponseEntity(
                 null,
-                Code.SAVE_ERR,
+                Code.SAVE_OK,
                 "添加成功"
         );
     }

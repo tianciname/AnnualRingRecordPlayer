@@ -20,8 +20,6 @@ import java.util.List;
  */
 public interface AnnualRingService {
 
-
-
     public ARResponseEntity getAllAnnualRingIdList();
 
     public ARResponseEntity getAnnualRingImage(String id) ;

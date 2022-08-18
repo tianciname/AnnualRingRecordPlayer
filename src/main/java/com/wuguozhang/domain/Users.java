@@ -1,6 +1,5 @@
 package com.wuguozhang.domain;
 
-
 import com.gitee.sunchenbin.mybatis.actable.annotation.*;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlCharsetConstant;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
@@ -9,12 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+
 /**
  * 年轮实体类
  * 成员变量:
- *         annualRingImage             年轮图片
- *         annualRingEnvironmental     环保知识
- *         Music                       乐曲
+ *         userName             用户名字
+ *         collectionList       收藏列表
+ *         historyList          查询历史
  *
  * @author wuguozhang
  * @version 1.0  2022.8
@@ -24,29 +24,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table
 @TableCharset(MySqlCharsetConstant.UTF8)
-public class AnnualRing {
-
+public class Users {
 
     @Column
     @IsNotNull
     @IsKey
     @ColumnType(MySqlTypeConstant.VARCHAR)
-    public String id;
+    private String userName;
 
     @Column
     @ColumnType(value = MySqlTypeConstant.VARCHAR)
-    public String annualRingImage;
+    private String collectionList;
 
     @Column
     @ColumnType(value = MySqlTypeConstant.VARCHAR)
-    public String annualRingEnvironmental;
+    private String musicName;
 
     @Column
     @ColumnType(value = MySqlTypeConstant.VARCHAR)
-    public String music;
+    private String historyList;
 
-    @Column
-    @ColumnType(value = MySqlTypeConstant.VARCHAR)
-    public String musicName;
+
 
 }

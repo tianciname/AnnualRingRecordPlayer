@@ -1,7 +1,6 @@
 package com.wuguozhang.controller.exception;
 
 
-import com.wuguozhang.controller.exception.superexception.SystemException;
 import com.wuguozhang.controller.exception.superexception.extendbussinessexception.DeleteException;
 import com.wuguozhang.controller.exception.superexception.extendbussinessexception.GetException;
 import com.wuguozhang.controller.exception.superexception.extendbussinessexception.SaveException;
