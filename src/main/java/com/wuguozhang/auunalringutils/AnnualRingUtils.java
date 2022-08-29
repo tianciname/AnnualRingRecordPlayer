@@ -5,11 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 
 /**
- * 功能: 工具类
+ * 功能: 操作服务器文件的工具类
  *
  * @author wuguozhang
  * @version 1.0 2022.8
@@ -17,7 +17,6 @@ import java.nio.file.Paths;
  */
 @Data
 public class AnnualRingUtils {
-
 
     private static final String BASE_PATH = "src/main/resources/static/data";
 
@@ -29,87 +28,108 @@ public class AnnualRingUtils {
         return ENVIRONMENTAL_PATH;
     }
 
-    public static String getMusicPath() {
-        return MUSIC_PATH;
+    public static Map<String,String> getMusicMap() {
+        return MUSIC_MAP;
     }
 
-    private static  String IMAGE_PATH = "";
-    private static  String ENVIRONMENTAL_PATH = "";
-    private static  String MUSIC_PATH = "";
-    public static  boolean saveData(String dataType, MultipartFile data , String idPath) throws IOException {
+    private static  String IMAGE_PATH;
+
+    private static  String ENVIRONMENTAL_PATH;
+
+    private static Map<String,String> MUSIC_MAP = new HashMap<>();
 
 
-        if (dataType.equals(DataType.IMAGE)){
+    /**
+     * @param data 年轮图片
+     * @param idPath 年轮信息的id
+     * @return 是否操作成功
+   、、
+     */
+    public static  boolean saveData( MultipartFile data , String idPath) throws IOException {
 
-            File imageFile =
-                    new File(BASE_PATH + File.separator + idPath + File.separator + PathType.IMAGE_FILE );
 
-            if(!imageFile.exists()){
-                imageFile.mkdirs();
-            }
+        File imageFile =
+                new File(BASE_PATH + File.separator + idPath + File.separator + PathType.IMAGE_FILE );
 
-            IMAGE_PATH = imageFile.getCanonicalPath() + File.separator +  data.getOriginalFilename();
-
-            data.transferTo(new File(IMAGE_PATH));
-
-            return true;
-
+        if(!imageFile.exists()){
+            imageFile.mkdirs();
         }
 
-        if(dataType.equals(DataType.MUSIC)){
+        IMAGE_PATH = imageFile.getCanonicalPath() + File.separator +  data.getOriginalFilename();
 
+        data.transferTo(new File(IMAGE_PATH));
+
+        return true;
+
+    }
+
+    /**
+     * @param data 音乐歌曲的列表
+     * @param idPath 年轮信息的id
+     */
+    public static  boolean saveData(List<MultipartFile> data , String idPath) throws IOException {
+
+        Map<String, String> musicMap = new HashMap<>();
+
+        for (MultipartFile music: data) {
+
+            String musicId = String.valueOf(UUID.randomUUID());
 
             File musicFile =
                     new File(BASE_PATH + File.separator +
-                            idPath + File.separator + PathType.MUSIC_FILE);
+                            idPath + File.separator + PathType.MUSIC_FILE + File.separator + musicId);
 
             if(!musicFile.exists()){
+
                 musicFile.mkdirs();
             }
 
-            MUSIC_PATH = musicFile.getCanonicalPath() + File.separator + data.getOriginalFilename();
+            String musicPath = musicFile.getCanonicalPath() + File.separator + music.getOriginalFilename();
 
-            data.transferTo(new File(MUSIC_PATH));
+            MUSIC_MAP.put(musicId,musicPath);
 
-            return true;
-
-        }
-
-        return false;
-
-    }
-
-    public static  boolean saveData(String dataType, String data , String idPath) throws IOException {
-
-        if (dataType.equals(DataType.ENVIRONMENTAL)) {
-
-            File environmentFile =
-                    new File(BASE_PATH + File.separator+
-                            idPath+ File.separator +
-                            PathType.ENVIRONMENTAL_FILE);
-
-            if(!environmentFile.exists()){
-                 environmentFile.mkdirs();
-            }
-
-            ENVIRONMENTAL_PATH = environmentFile.getCanonicalPath() + File.separator+ "message.text";
-
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new FileWriter(ENVIRONMENTAL_PATH));
-
-            bufferedWriter.write(data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-
-            return true;
+            music.transferTo(new File(musicPath));
 
         }
 
-        return false;
+        return true;
+    }
+
+    /**
+     * @param data 环保信息
+     * @param idPath 年轮信息的id
+     * @return 是否操作成功
+     */
+    public static  boolean saveData( String data , String idPath) throws IOException {
+
+
+        File environmentFile =
+                new File(BASE_PATH + File.separator+
+                        idPath+ File.separator +
+                        PathType.ENVIRONMENTAL_FILE);
+
+        if(!environmentFile.exists()){
+             environmentFile.mkdirs();
+        }
+
+        ENVIRONMENTAL_PATH = environmentFile.getCanonicalPath() + File.separator+ "message.text";
+
+        BufferedWriter bufferedWriter = new BufferedWriter(
+                new FileWriter(ENVIRONMENTAL_PATH));
+
+        bufferedWriter.write(data);
+        bufferedWriter.flush();
+        bufferedWriter.close();
+
+        return true;
 
     }
 
 
+    /**
+     * @param path 要删除的文件的路径
+     * @return 是否操作成功
+     */
     public static boolean deleteData(String path) throws IOException {
 
         Files.delete(Paths.get(path));

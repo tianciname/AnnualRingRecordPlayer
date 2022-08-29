@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 @TableCharset(MySqlCharsetConstant.UTF8)
 public class AnnualRing {
 
-
     @Column
     @IsNotNull
     @IsKey
@@ -41,12 +40,5 @@ public class AnnualRing {
     @ColumnType(value = MySqlTypeConstant.VARCHAR)
     public String annualRingEnvironmental;
 
-    @Column
-    @ColumnType(value = MySqlTypeConstant.VARCHAR)
-    public String music;
-
-    @Column
-    @ColumnType(value = MySqlTypeConstant.VARCHAR)
-    public String musicName;
 
 }

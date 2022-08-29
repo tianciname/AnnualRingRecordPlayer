@@ -1,4 +1,4 @@
-package com.wuguozhang.entites;
+package com.wuguozhang.responseentites;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,9 +27,7 @@ public class AnnualRingEntity {
 
     private String annualRingEnvironmental;
 
-    private String music;
-
-    public String musicName;
+    private List<String> musicList;
 
 
 }

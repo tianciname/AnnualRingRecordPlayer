@@ -4,7 +4,7 @@ package com.wuguozhang.controller.exception;
 import com.wuguozhang.controller.exception.superexception.extendbussinessexception.DeleteException;
 import com.wuguozhang.controller.exception.superexception.extendbussinessexception.GetException;
 import com.wuguozhang.controller.exception.superexception.extendbussinessexception.SaveException;
-import com.wuguozhang.entites.ARResponseEntity;
+import com.wuguozhang.responseentites.ARResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

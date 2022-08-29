@@ -1,6 +1,5 @@
-package com.wuguozhang.entites;
+package com.wuguozhang.responseentites;
 
-import com.wuguozhang.controller.exception.Code;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

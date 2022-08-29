@@ -2,11 +2,9 @@ package com.wuguozhang.service;
 
 
 import com.wuguozhang.domain.AnnualRing;
-import com.wuguozhang.entites.ARResponseEntity;
-import com.wuguozhang.entites.AnnualRingEntity;
-import org.springframework.http.ResponseEntity;
+import com.wuguozhang.domain.Music;
+import com.wuguozhang.responseentites.ARResponseEntity;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -26,10 +24,8 @@ public interface AnnualRingService {
 
     public ARResponseEntity  getAnnualRing(String id) ;
 
-    public ARResponseEntity addAnnualRing(AnnualRing annualRing);
+    public ARResponseEntity addAnnualRing(AnnualRing annualRing, List<Music> musicList);
 
     public ARResponseEntity deleteAnnualRingById(String id);
-
-    public ARResponseEntity addMusicName(AnnualRing annualRing);
 
 }

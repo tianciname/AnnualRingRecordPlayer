@@ -1,9 +1,11 @@
-package com.wuguozhang.entites;
+package com.wuguozhang.responseentites;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * 所属功能模块: 登录模块
@@ -17,7 +19,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsersResponseEntity {
-
 
     private UsersEntity usersData;
 
