@@ -63,7 +63,7 @@ public class AnnualRingController {
      * @return ARResponseEntity 年轮信息实体类对应的文件地址
      */
     @GetMapping()
-    public ARResponseEntity  getAnnualRing(@RequestParam String id){
+    public ARResponseEntity  getAnnualRing( String id){
 
         return annualRingService.getAnnualRing(id);
     }
@@ -79,10 +79,13 @@ public class AnnualRingController {
      * @return ARResponseEntity 空实体类
      */
     @PostMapping
-    public ARResponseEntity addAnnualRing(@RequestParam MultipartFile annualRingImage,
-                                          @RequestParam String annualRingEnvironmental,
-                                          @RequestParam List<MultipartFile> musicData) throws IOException {
-        //年轮
+    public ARResponseEntity addAnnualRing( MultipartFile annualRingImage,
+                                           String annualRingEnvironmental,
+                                           List<MultipartFile> musicData) throws IOException {
+
+        //@RequestParam不能接收axios post请求体的数据
+
+        //年轮id
         String AnnualRingId = UUID.randomUUID().toString();
 
         //将年轮信息存储到服务器本地
@@ -106,7 +109,6 @@ public class AnnualRingController {
         for (String musicId: musicIdSet) {
 
             Music music = new Music();
-
 
             music.setId(musicId);
             music.setMusic(musicMap.get(musicId));

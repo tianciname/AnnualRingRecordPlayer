@@ -15,7 +15,6 @@ spring:
 
 
 
-
 #自动建表配置
 mybatis:
   table:
@@ -27,5 +26,6 @@ mybatis:
 
 mybatis-plus:
   mapper-locations: classpath*:xxxxxx/*.xml,classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
-
+server:
+  port: 8888
 
