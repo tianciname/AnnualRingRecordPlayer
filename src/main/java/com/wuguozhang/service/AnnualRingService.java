@@ -20,9 +20,7 @@ public interface AnnualRingService {
 
     public ARResponseEntity getAllAnnualRingIdList();
 
-    public ARResponseEntity getAnnualRingImage(String id) ;
-
-    public ARResponseEntity  getAnnualRing(String id) ;
+    public ARResponseEntity  getAnnualRingMusicList(String id) ;
 
     public ARResponseEntity addAnnualRing(AnnualRing annualRing, List<Music> musicList);
 

@@ -23,10 +23,6 @@ public class AnnualRingEntity {
 
     private List<String> idList;
 
-    private String annualRingImage;
-
-    private String annualRingEnvironmental;
-
     private List<String> musicList;
 
 

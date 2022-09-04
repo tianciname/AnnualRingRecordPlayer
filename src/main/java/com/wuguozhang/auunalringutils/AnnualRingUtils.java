@@ -55,7 +55,7 @@ public class AnnualRingUtils {
             imageFile.mkdirs();
         }
 
-        IMAGE_PATH = imageFile.getCanonicalPath() + File.separator +  data.getOriginalFilename();
+        IMAGE_PATH = imageFile.getCanonicalPath() + File.separator +  "image.jpg";
 
         data.transferTo(new File(IMAGE_PATH));
 
@@ -84,7 +84,7 @@ public class AnnualRingUtils {
                 musicFile.mkdirs();
             }
 
-            String musicPath = musicFile.getCanonicalPath() + File.separator + music.getOriginalFilename();
+            String musicPath = musicFile.getCanonicalPath() + File.separator + "music.mp3";
 
             MUSIC_MAP.put(musicId,musicPath);
 

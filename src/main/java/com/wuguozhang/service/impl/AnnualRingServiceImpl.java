@@ -66,29 +66,9 @@ public class AnnualRingServiceImpl implements AnnualRingService {
         );
     }
 
-    @Override
-    public ARResponseEntity getAnnualRingImage(String id)  {
-
-        AnnualRingEntity annualRingEntity = new AnnualRingEntity();
-
-        try {
-            AnnualRing annualR = annualRing.selectById(id);
-            annualRingEntity.setAnnualRingImage(annualR.getAnnualRingImage());
-
-        }catch (Exception e){
-            throw new GetException();
-
-        }
-
-        return new ARResponseEntity(
-                annualRingEntity,
-                Code.GET_OK,
-                "获取成功"
-        );
-    }
 
     @Override
-    public ARResponseEntity getAnnualRing(String id) {
+    public ARResponseEntity getAnnualRingMusicList(String id) {
 
         AnnualRingEntity annualRingEntity = new AnnualRingEntity();
 
@@ -104,8 +84,6 @@ public class AnnualRingServiceImpl implements AnnualRingService {
                 musicIdList.add(music.getId());
             }
 
-            annualRingEntity.setAnnualRingImage(annualR.getAnnualRingImage());
-            annualRingEntity.setAnnualRingEnvironmental(annualR.getAnnualRingEnvironmental());
             annualRingEntity.setMusicList(musicIdList);
 
         }catch (Exception e){

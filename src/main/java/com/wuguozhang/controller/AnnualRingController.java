@@ -31,7 +31,7 @@ public class AnnualRingController {
     /**
      * 功能：获取所有年轮数据的id
      *
-     * @return ARResponseEntity  年轮信息id的列表
+     * @return ARResponseEntity  年轮信息实体类
      */
     @GetMapping("/allid")
     public ARResponseEntity getAllAnnualRingIdList(){
@@ -41,31 +41,16 @@ public class AnnualRingController {
 
 
     /**
-     * 功能: 按照id返回库模块中的年轮图片
-     *
-     * @param id 一组年轮信息的id
-     *
-     * @return ARResponseEntity 年轮图片地址的实体类
-     */
-    @GetMapping("/img")
-    public ARResponseEntity getAnnualRingImage(@RequestParam String id) {
-
-        return annualRingService.getAnnualRingImage(id);
-
-    }
-
-
-    /**
-     * 功能: 按照id返回库模块中的年轮图片+环保知识+音乐
+     * 功能: 按照年轮图片id返回库模块中对应的音乐id列表
      *
      * @param id 年轮图片id
      *
-     * @return ARResponseEntity 年轮信息实体类对应的文件地址
+     * @return ARResponseEntity 年轮信息实体类
      */
-    @GetMapping()
-    public ARResponseEntity  getAnnualRing( String id){
+    @GetMapping("/{id}")
+    public ARResponseEntity getAnnualRingMusicList(@PathVariable String id){
 
-        return annualRingService.getAnnualRing(id);
+        return annualRingService.getAnnualRingMusicList(id);
     }
 
 
@@ -130,8 +115,8 @@ public class AnnualRingController {
      * @param id 一组年轮数据的id
      * @return ARResponseEntity 空实体类
      */
-    @DeleteMapping()
-    public ARResponseEntity deleteAnnualRingById(@RequestParam String id){
+    @DeleteMapping("/{id}")
+    public ARResponseEntity deleteAnnualRingById(@PathVariable String id){
 
         return  annualRingService.deleteAnnualRingById(id);
 
