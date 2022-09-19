@@ -73,17 +73,16 @@ public class AnnualRingServiceImpl implements AnnualRingService {
         AnnualRingEntity annualRingEntity = new AnnualRingEntity();
 
         LambdaQueryWrapper<Music> MusicLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        MusicLambdaQueryWrapper.select(Music::getId);
+        MusicLambdaQueryWrapper.select(Music::getId)
+                .eq(Music::getAnnualRingImageId, id);
         try{
 
-            AnnualRing annualR = annualRing.selectById(id);
             List<Music> musicData = music.selectList(MusicLambdaQueryWrapper);
             List<String> musicIdList = new ArrayList<>();
 
             for (Music music: musicData) {
                 musicIdList.add(music.getId());
             }
-
             annualRingEntity.setMusicList(musicIdList);
 
         }catch (Exception e){

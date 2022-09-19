@@ -19,7 +19,7 @@ import java.util.List;
 public class AnnualRingEntity {
 
 
-    private long id;
+    private String id;
 
     private List<String> idList;
 
